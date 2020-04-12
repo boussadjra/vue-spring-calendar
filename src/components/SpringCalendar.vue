@@ -16,7 +16,7 @@
         <div
           class="spring-button"
           :class="{'spring-button-active':calendar.selectedDate.type === 'month'}"
-          @click="changeContent('month')"
+          @click="changeContent('month');extendedMonth=true;"
         >Month</div>
         <div
           class="spring-button"
