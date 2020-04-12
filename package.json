@@ -1,5 +1,5 @@
 {
-  "name": "vueye-table",
+  "name": "vue-spring-calendar",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -7,7 +7,9 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@vue/composition-api": "^0.3.4",
     "core-js": "^3.6.4",
+    "moment": "^2.24.0",
     "vue": "^2.6.11"
   },
   "devDependencies": {
