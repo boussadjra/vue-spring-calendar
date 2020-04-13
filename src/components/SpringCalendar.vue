@@ -58,6 +58,7 @@ import { provideContext } from "./useContext";
  */
 
 export default {
+  name:"spring-calendar",
   props: ["year", "locale", "color", "events"],
   setup(props) {
     const { year, color, events, locale } = props;
