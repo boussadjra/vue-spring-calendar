@@ -32,8 +32,8 @@
         "last 2 versions"
     ],
     "files": [
-        "build/*.js",
-        "build/*.css",
+        "build/*",
+
         "src/components/*.scss",
         "src/components/*.vue",
         "src/components/*.js",
