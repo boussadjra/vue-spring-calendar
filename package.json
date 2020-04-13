@@ -2,7 +2,7 @@
     "author": "BRAHIM BOUSSADJRA",
     "name": "vue-spring-calendar",
     "main": "./build/spring-calendar.common.js",
-    "version": "0.1.3",
+    "version": "0.1.2",
     "private": false,
     "repository": {
         "type": "git",
@@ -13,7 +13,7 @@
     "scripts": {
         "serve": "vue-cli-service serve",
         "build": "vue-cli-service build",
-        "bundle": "vue-cli-service build --dest build  --target lib --name spring-calendar ./src/components/SpringCalendar.vue"
+        "bundle": "vue-cli-service build --dest build  --target lib --inline-vue --name spring-calendar ./src/components/SpringCalendar.vue"
     },
     "dependencies": {
         "@vue/composition-api": "^0.3.4",
@@ -32,9 +32,11 @@
         "last 2 versions"
     ],
     "files": [
-        "build/spring-calendar.common.js",
-        "build/spring-calendar.umd.min.js",
+        "build/*.js",
         "build/*.css",
+        "src/components/*.scss",
+        "src/components/*.vue",
+        "src/components/*.js",
         "*.md"
     ],
     "keywords": [
