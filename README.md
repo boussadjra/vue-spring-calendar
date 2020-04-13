@@ -38,7 +38,7 @@ export default {
         startDate:'2020-04-09 12:00',
         endDate:'2020-04-09 16:00',
     },
-   
+    ]
 
   }),
   components: {
