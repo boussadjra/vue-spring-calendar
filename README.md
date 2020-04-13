@@ -1,6 +1,5 @@
 ## Vue Spring Calendar
- It's a Vue based component which provides the functionality of a full-calendar that 
- shows daily events. 
+ It's a Vue based component which provides the functionality of a full-calendar that shows daily events. 
 
 ## Installation
 
@@ -10,6 +9,7 @@
 
 ## Usage
 
+**`App.vue :`**
 ```js 
 <template>
   <div id="app">
@@ -50,6 +50,21 @@ export default {
 
 ```
 
+**`main.js`**
+```
+import Vue from 'vue'
+import App from './App.vue'
+
+//import the new composition api in order to make it works in Vue@2.x
+import VueComp from '@vue/composition-api'
+Vue.config.productionTip = false
+//use the vue-composition-api plugin
+Vue.use(VueComp)
+
+new Vue({
+  render: h => h(App),
+}).$mount('#app')
+```
 ## Demo 
 
 [Vue Spring Calendar demo](https://boussadjra.github.io/vue-spring-calendar/)
