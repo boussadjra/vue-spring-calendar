@@ -6,7 +6,7 @@
 
  `npm install vue-spring-calendar --save`
 
-
+>For React.js developer please check this [`repository`](https://github.com/boussadjra/spring-calendar)
 ## Usage
 
 **`App.vue :`**
