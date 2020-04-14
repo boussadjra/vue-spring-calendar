@@ -1,5 +1,5 @@
 import { reactive, watch, onMounted } from '@vue/composition-api';
-import moment from 'moment/min/moment-with-locales';
+import moment from 'moment/moment';
 
 const useCalendar = (thisYear, locale, events) => {
 	/**
@@ -19,7 +19,7 @@ const useCalendar = (thisYear, locale, events) => {
 	onMounted(() => {
 		moment.locale(locale);
 
-		changeView('day');
+		changeView('year');
 	});
 
 	/****

@@ -16,9 +16,10 @@
         "bundle": "vue-cli-service build --dest build  --target lib  --name spring-calendar ./src/components/SpringCalendar.vue"
     },
     "dependencies": {
-        "@vue/composition-api": "^0.3.4",
+        "@vue/composition-api": "^0.5.0",
         "moment": "^2.24.0",
-        "vue": "^2.6.11"
+        "vue": "^2.6.11",
+        "core-js": "^3.6.4"
     },
     "devDependencies": {
         "@vue/cli-plugin-babel": "^4.2.0",
@@ -33,7 +34,6 @@
     ],
     "files": [
         "build/spring-calendar.common.js",
-        "build/spring-calendar.umd.min.js",
         "build/*.css",
         "*.md"
     ],

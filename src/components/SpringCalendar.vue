@@ -65,7 +65,7 @@ export default {
     const { year, color, events, locale } = props;
     /*** */
     const mainContent = ref("year");
-
+/*** */
     const extendedMonth = ref(false);
     /*** */
 

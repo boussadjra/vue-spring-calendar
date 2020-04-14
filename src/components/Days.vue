@@ -5,6 +5,7 @@
       class="sc-day sc-day-in-month"
       :style="{'grid-column-start':'span '+month.weekday}"
     ></div>
+    
     <div
       v-for="(day, index) in month.days"
       :key="index"
@@ -24,7 +25,8 @@
             class="sc-event"
           >{{e.title}}</span>
           <span class="sc-event-more-indicator">+{{day.events.length - 3}}</span>
-          <template v-if="indexDayToShowEvents ===index && day.events.length > 0 ">
+       <transition name="slide-fade" >
+          <template v-if="indexDayToShowEvents == index && day.events.length > 0 ">
             <div class="sc-more-events-wrp">
               <div class="sc-more-events">
                 <div class="sc-events-detail">
@@ -41,6 +43,7 @@
               </div>
             </div>
           </template>
+       </transition>
         </div>
       </template>
     </div>
@@ -87,4 +90,18 @@ export default {
 </script>
 
 <style>
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateY(-10px);
+  transform: translateX(-100px);
+  opacity: 0;
+}
 </style>
