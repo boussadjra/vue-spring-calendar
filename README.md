@@ -55,7 +55,7 @@ export default {
 import Vue from 'vue'
 import App from './App.vue'
 
-//import the new composition api in order to make it works in Vue@2.x
+//import the new composition api in order to make it work in Vue@2.x
 import VueComp from '@vue/composition-api'
 Vue.config.productionTip = false
 //use the vue-composition-api plugin
