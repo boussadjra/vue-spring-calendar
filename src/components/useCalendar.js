@@ -1,12 +1,15 @@
 import { reactive, watch, onMounted } from '@vue/composition-api';
 import moment from 'moment/moment';
 
-const useCalendar = (thisYear, locale, events) => {
+const useCalendar = (thisYear, locale, events, startOfWeek ) => {
 	/**
 	 * * Main calendar
 	 */
 	const calendar = reactive({
 		selectedDate: { type: 'year', value: new Date().getFullYear(), default: true },
+
+		weekdays:[],
+		weekdaysShort:[],
 	});
 
 	/**
@@ -17,7 +20,20 @@ const useCalendar = (thisYear, locale, events) => {
 	};
 
 	onMounted(() => {
-		moment.locale(locale);
+	
+		moment.updateLocale(locale, {
+			week: {
+				dow:startOfWeek,
+			},
+		});
+		calendar.weekdays=moment.weekdays()
+		calendar.weekdaysShort=moment.weekdaysShort()
+		if(startOfWeek){
+			calendar.weekdays=[...calendar.weekdays.splice(startOfWeek),...calendar.weekdays]
+			calendar.weekdaysShort=[...calendar.weekdaysShort.splice(startOfWeek),...calendar.weekdaysShort]
+		
+		}
+		window.moment = moment;
 
 		changeView('year');
 	});
@@ -52,7 +68,14 @@ const useCalendar = (thisYear, locale, events) => {
 		let fullLabel = `${_year}-${index}`;
 		let date = moment(fullLabel);
 
-		let month = { label, fullLabel, index, weekday: date.weekday(), weekdaysShort: moment.weekdaysShort() };
+		let month = {
+			label,
+			fullLabel,
+			index,
+			weekday: date.weekday(),
+			weekdaysShort: calendar.weekdaysShort,
+			weekdays: calendar.weekdays,
+		};
 
 		month.days = [...Array(date.daysInMonth())].map((_, dayIndex) => {
 			return getDay({
@@ -63,7 +86,15 @@ const useCalendar = (thisYear, locale, events) => {
 
 		return month;
 	};
-
+	const generateWeek = _date => {
+		let index = _date.month() + 1;
+		let label = moment.months()[_date.month()];
+		let _year = _date.year();
+let _month=getMonth(_year, index, label);
+window._date = _date;
+window._month=_month
+		return { ..._month, hours: getHours() };
+	};
 	/** */
 	const getDay = day => {
 		day.localeFormat = moment(day.label).format('LL');
@@ -129,7 +160,12 @@ const useCalendar = (thisYear, locale, events) => {
 				});
 				break;
 			case 'week':
-				setSelectedDate({ ...calendar.selectedDate, type: 'week', value: date.format('MMMM YYYY') });
+				setSelectedDate({
+					...calendar.selectedDate,
+					type: 'week',
+					value: date.format('MMMM YYYY'),
+					week: generateWeek(date),
+				});
 
 				break;
 			case 'month':

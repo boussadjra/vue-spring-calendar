@@ -5,7 +5,7 @@
     <div
       v-for="(weekday, j) in month.weekdaysShort"
       class="sc-weekday spring-centered-content"
-      :key="'wd'+j"
+      :key="'mwd'+j"
     >{{weekday}}</div>
 
     <Days :month="{...month,extended}"/>

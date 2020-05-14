@@ -1,7 +1,7 @@
 <template>
   <div class="sc-full-day">
     <template v-for="(hour, index) in day.hours">
-      <div :key="index" class="sc-full-day-hour">{{hour.label}}</div>
+      <div :key="'fdh'+index" class="sc-full-day-hour">{{hour.label}}</div>
       <div class="sc-full-day-time-line-item">
         <div class="sc-full-day-time-line-circle"/>
       </div>
@@ -10,7 +10,7 @@
       <div class="sc-full-day-events" >
       <div
         v-for="(event, index) in day.events"
-        :key="index"
+        :key="'fd'+index"
         :style="{gridRow:new Date(event.startDate).getHours() + 1 +'/span ' +(new Date(event.endDate).getHours() - new Date(event.startDate).getHours() + 1),}"
         class="sc-full-day-event"
         :index="index"

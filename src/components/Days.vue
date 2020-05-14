@@ -8,7 +8,7 @@
     
     <div
       v-for="(day, index) in month.days"
-      :key="index"
+      :key="'day'+index"
       @click="chooseDay($event,day,index)"
       :class="{'sc-today':day.isToday}"
       class="sc-day sc-day-in-month"
@@ -21,7 +21,7 @@
         <div class="sc-day-events">
           <span
             v-for="(e, index) in sliceEvents(day.events)"
-            :key="index"
+            :key="'de'+index"
             class="sc-event"
           >{{e.title}}</span>
           <span class="sc-event-more-indicator">+{{day.events.length - 3}}</span>
@@ -32,7 +32,7 @@
                 <div class="sc-events-detail">
                   <div class="sc-events-detail-day">{{day.localeFormat}}</div>
 
-                  <div v-for="(e, i) in day.events" :key="i" class="sc-event-detail">
+                  <div v-for="(e, i) in day.events" :key="'d'+i" class="sc-event-detail">
                     <div class="sc-event-detail-time">
                       <div>{{e.startTime}}</div>
                       <div>{{e.endTime}}</div>

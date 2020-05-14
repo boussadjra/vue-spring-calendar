@@ -12,12 +12,17 @@
           :class="{'spring-button-active':calendar.selectedDate.type === 'day'}"
           @click="changeContent('day')"
         >Day</div>
-
+        <div
+          class="spring-button"
+          :class="{'spring-button-active':calendar.selectedDate.type === 'week'}"
+          @click="changeContent('week');"
+        >Week</div>
         <div
           class="spring-button"
           :class="{'spring-button-active':calendar.selectedDate.type === 'month'}"
           @click="changeContent('month');extendedMonth=true;"
         >Month</div>
+
         <div
           class="spring-button"
           :class="{'spring-button-active':calendar.selectedDate.type === 'year'}"
@@ -31,8 +36,8 @@
         :extended="extendedMonth"
         :months="calendar.selectedDate.months"
         :month="calendar.selectedDate.month"
+        :week="calendar.selectedDate.week"
         :day="calendar.selectedDate"
-        
       ></component>
     </div>
   </div>
@@ -43,6 +48,7 @@ import { NextButton, PrevButton } from "./buttons";
 import Year from "./Year";
 import Month from "./Month";
 import Day from "./Day";
+import Week from "./Week";
 import {
   reactive,
   computed,
@@ -59,20 +65,21 @@ import { provideContext } from "./useContext";
  */
 
 export default {
-  name:"spring-calendar",
-  props: ["year", "locale", "color", "events"],
+  name: "spring-calendar",
+  props: ["year", "locale", "color", "events", "startOfWeek"],
   setup(props) {
-    const { year, color, events, locale } = props;
+    const { year, color, events, locale, startOfWeek } = props;
     /*** */
     const mainContent = ref("year");
-/*** */
+    /*** */
     const extendedMonth = ref(false);
     /*** */
 
     const { calendar, changeView, gotoNext, gotoPrev } = useCalendar(
       year,
       locale,
-      events
+      events,
+      startOfWeek
     );
     /***
      * * watchers
@@ -99,6 +106,9 @@ export default {
     }
 
     function changeContent(content) {
+      console.log("-------content, calendar.selectedDate.value-------------");
+      console.log(content, calendar.selectedDate.value);
+      console.log("--------------------");
       changeView(content, calendar.selectedDate.value, false, true);
     }
 
@@ -132,7 +142,8 @@ export default {
     PrevButton,
     Year,
     Day,
-    Month
+    Month,
+    Week
   }
 };
 </script>

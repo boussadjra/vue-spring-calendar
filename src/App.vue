@@ -1,7 +1,7 @@
 <template>
   <div id="app">
   
-     <SpringCalendar year="2020" color="#5118ac" :events="events" locale="en"/>
+     <SpringCalendar year="2020" color="#5118ac" :events="events" locale="en" start-of-week="1"/>
 
   </div>
 </template>

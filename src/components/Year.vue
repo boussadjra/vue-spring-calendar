@@ -1,7 +1,7 @@
 <template>
   <div class="sc-year-months">
     <div v-for="(month, index) in months" :key="index">
-      <Month :month="month" :key="'m'+index"/>
+      <Month :month="month" :key="'my'+index"/>
     </div>
   </div>
 </template>
