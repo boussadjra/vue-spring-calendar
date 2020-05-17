@@ -5,7 +5,7 @@
       class="sc-day sc-day-in-month"
       :style="{'grid-column-start':'span '+month.weekday}"
     ></div>
-    
+
     <div
       v-for="(day, index) in month.days"
       :key="'day'+index"
@@ -24,26 +24,29 @@
             :key="'de'+index"
             class="sc-event"
           >{{e.title}}</span>
-          <span class="sc-event-more-indicator">+{{day.events.length - 3}}</span>
-       <transition name="slide-fade" >
-          <template v-if="indexDayToShowEvents == index && day.events.length > 0 ">
-            <div class="sc-more-events-wrp">
-              <div class="sc-more-events">
-                <div class="sc-events-detail">
-                  <div class="sc-events-detail-day">{{day.localeFormat}}</div>
+          <span
+            class="sc-event-more-indicator"
+            v-if="day.events.length>3"
+          >+{{day.events.length - 3}}</span>
+          <transition name="slide-fade">
+            <template v-if="indexDayToShowEvents == index && day.events.length > 0 ">
+              <div class="sc-more-events-wrp" :style="{left:day.weekday>3?'-150%':'50%'}">
+                <div class="sc-more-events">
+                  <div class="sc-events-detail">
+                    <div class="sc-events-detail-day">{{day.localeFormat}}</div>
 
-                  <div v-for="(e, i) in day.events" :key="'d'+i" class="sc-event-detail">
-                    <div class="sc-event-detail-time">
-                      <div>{{e.startTime}}</div>
-                      <div>{{e.endTime}}</div>
+                    <div v-for="(e, i) in day.events" :key="'d'+i" class="sc-event-detail">
+                      <div class="sc-event-detail-time">
+                        <div>{{e.startTime}}</div>
+                        <div>{{e.endTime}}</div>
+                      </div>
+                      <div class="sc-event-detail-title">{{e.title}}</div>
                     </div>
-                    <div class="sc-event-detail-title">{{e.title}}</div>
                   </div>
                 </div>
               </div>
-            </div>
-          </template>
-       </transition>
+            </template>
+          </transition>
         </div>
       </template>
     </div>
@@ -80,7 +83,8 @@ export default {
     return {
       selectDay,
       sliceEvents,
-      chooseDay,indexDayToShowEvents
+      chooseDay,
+      indexDayToShowEvents
     };
   },
   directives: {
@@ -93,10 +97,10 @@ export default {
 /* Enter and leave animations can use different */
 /* durations and timing functions.              */
 .slide-fade-enter-active {
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 .slide-fade-leave-active {
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {

@@ -1,15 +1,15 @@
 import { reactive, watch, onMounted } from '@vue/composition-api';
 import moment from 'moment/moment';
 
-const useCalendar = (thisYear, locale, events, startOfWeek ) => {
+const useCalendar = (thisYear, locale, events) => {
 	/**
 	 * * Main calendar
 	 */
 	const calendar = reactive({
 		selectedDate: { type: 'year', value: new Date().getFullYear(), default: true },
 
-		weekdays:[],
-		weekdaysShort:[],
+		weekdays: [],
+		weekdaysShort: [],
 	});
 
 	/**
@@ -20,19 +20,14 @@ const useCalendar = (thisYear, locale, events, startOfWeek ) => {
 	};
 
 	onMounted(() => {
-	
-		moment.updateLocale(locale, {
-			week: {
-				dow:startOfWeek,
-			},
-		});
-		calendar.weekdays=moment.weekdays()
-		calendar.weekdaysShort=moment.weekdaysShort()
-		if(startOfWeek){
+		moment.updateLocale(locale);
+		calendar.weekdays = moment.weekdays();
+		calendar.weekdaysShort = moment.weekdaysShort();
+		/*	if(startOfWeek){
 			calendar.weekdays=[...calendar.weekdays.splice(startOfWeek),...calendar.weekdays]
 			calendar.weekdaysShort=[...calendar.weekdaysShort.splice(startOfWeek),...calendar.weekdaysShort]
 		
-		}
+		}*/
 		window.moment = moment;
 
 		changeView('year');
@@ -87,20 +82,41 @@ const useCalendar = (thisYear, locale, events, startOfWeek ) => {
 		return month;
 	};
 	const generateWeek = _date => {
-		let index = _date.month() + 1;
-		let label = moment.months()[_date.month()];
-		let _year = _date.year();
-let _month=getMonth(_year, index, label);
-window._date = _date;
-window._month=_month
-		return { ..._month, hours: getHours() };
+		window._date = _date;
+
+		let _week = {
+			weekdays: calendar.weekdays.map((dw, i) => {
+				let date = _date.subtract(_date.weekday() - i, 'day').date();
+				let _month = _date.month() + 1;
+				let _year = _date.year();
+				let _day = {
+					index: date,
+					label: `${_year}-${_month}-${date}`,
+				};
+				
+				
+				return {
+					label: dw,
+					date,
+					month: _month,
+					year: _year,
+					statOfWeek: _date.subtract(_date.weekday(), 'day'),
+					events:getEvents(_day)
+				};
+			}),
+			hours: getHours(),
+		};
+
+		return _week;
 	};
 	/** */
 	const getDay = day => {
-		day.localeFormat = moment(day.label).format('LL');
+		let _date=moment(day.label);
+		day.localeFormat = _date.format('LL');
 		day.hours = getHours();
 		day.events = getEvents(day);
 		day.isToday = moment().isSame(day.label, 'day');
+		day.weekday=_date.weekday()
 		return day;
 	};
 	/**
@@ -114,6 +130,7 @@ window._month=_month
 		return evts.map(event => {
 			event.startTime = moment(event.startDate).format('hh:mm A');
 			event.endTime = moment(event.endDate).format('hh:mm A');
+			event.weekday=moment(day.label).weekday()
 			return event;
 		});
 	};
@@ -163,7 +180,10 @@ window._month=_month
 				setSelectedDate({
 					...calendar.selectedDate,
 					type: 'week',
-					value: date.format('MMMM YYYY'),
+					value: (date => {
+						let _date = date.subtract(date.weekday(), 'day');
+						return _date.format('LL');
+					})(date), //we refer the week value to its start date
 					week: generateWeek(date),
 				});
 
