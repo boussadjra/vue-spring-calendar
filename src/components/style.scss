@@ -4,6 +4,12 @@
     --primary: #5118ac;
 }
 
+@mixin forSmallScreens($media) {
+    @media (max-width: $media+px) {
+        @content;
+    }
+}
+
 * {
     box-sizing: border-box;
 }
@@ -39,7 +45,10 @@ body {
     background: rgb(219, 219, 223);
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: minmax(64px, auto) 1fr;
+    grid-template-rows: 64px 1fr;
+    @include forSmallScreens(680) {
+        grid-template-rows: 128px 1fr;
+    }
     grid-auto-flow: dense;
     grid-template-areas: 'header header' 'content content';
     grid-row-gap: 4px;
@@ -58,7 +67,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    flex-wrap: wrap;
+    @include forSmallScreens(680) {
+        flex-direction: column;
+    }
     .sc-year {
         display: flex;
         justify-content: space-around;
@@ -82,6 +93,9 @@ body {
             padding: 0 30px;
             height: 48px;
             width: 100px;
+            @include forSmallScreens(640) {
+                width: 80px;
+            }
             // letter-spacing: 2px;
             line-height: 48px;
             text-align: center;
@@ -100,15 +114,19 @@ body {
     }
 }
 
-.spring-main-content .sc-year-months {
-    /*  grid-area: content;
+.spring-main-content {
+    justify-content: center;
+    align-items: center;
+    .sc-year-months {
+        /*  grid-area: content;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;*/
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    grid-gap: 20px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        grid-gap: 20px;
+    }
 }
 
 .sc-month-wrapper {

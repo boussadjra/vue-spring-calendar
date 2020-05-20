@@ -97,6 +97,7 @@ const useCalendar = (thisYear, locale, events) => {
 				
 				return {
 					label: dw,
+					labelShort: calendar.weekdaysShort[i],
 					date,
 					month: _month,
 					year: _year,

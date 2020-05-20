@@ -2,7 +2,7 @@
   <div class="sc-week-wrapper">
     <div class="sc-weekdays">
       <div v-for="(weekday, j) in week.weekdays" class="sc-weekday" :key="'fwd'+j">
-        <div class="sc-weekday-label">{{weekday.label}}</div>
+        <div class="sc-weekday-label" :data-full="weekday.label" :data-short="weekday.labelShort"></div>
         <div class="sc-weekday-date">{{weekday.date}}</div>
       </div>
     </div>
@@ -28,13 +28,11 @@
           :class="{'sc-week-event-focused':item.title==focusedEvent.title}"
           @click="focusOnEvent(item)"
         >
-        <div v-if="item.title==focusedEvent.title" class="sc-week-event-time">
+          <div v-if="item.title==focusedEvent.title" class="sc-week-event-time">
             <div>{{item.startTime}}</div>
             <div>{{item.endTime}}</div>
           </div>
           <div class="sc-week-event-title">{{item.title}}</div>
-       
-          </div>
         </div>
       </div>
     </div>
@@ -50,7 +48,7 @@ export default {
   setup(props) {
     const { week } = props;
 
-    const focusedEvent=ref({})
+    const focusedEvent = ref({});
     const events = computed(() => {
       let left = 0;
       let range = [];
@@ -74,10 +72,8 @@ export default {
             "grid-column": event.weekday + 1,
             // "z-index": startHour + 1,
             background: event.color,
-            height :
-            (endHour - startHour) * 32 + (32 * endMinutes) / 60 + "px"
+            height: (endHour - startHour) * 32 + (32 * endMinutes) / 60 + "px"
           };
-          
 
           return event;
         });
@@ -97,32 +93,39 @@ export default {
     });
 
     function getEventsByHour(hour, day) {
-  let   _events= events.value.filter(e => {
+      let _events = events.value.filter(e => {
         let startHour = new Date(e.startDate).getHours();
         return startHour === hour && day === e.weekday;
-      })
-      
-     return  _events.map((e,i)=>{
-      
-        e.style.left=(i/_events.length*90)+'%'
-        e.style.top='0px'
+      });
+
+      return _events.map((e, i) => {
+        e.style.left = (i / _events.length) * 90 + "%";
+        e.style.top = "0px";
         return e;
       });
     }
 
-    const focusOnEvent=(event)=>{
-
-     focusedEvent.value=event;
-    }
+    const focusOnEvent = event => {
+      focusedEvent.value = event;
+    };
     return {
       events,
-      mappedEvents,focusOnEvent,focusedEvent
+      mappedEvents,
+      focusOnEvent,
+      focusedEvent
     };
   }
 };
 </script>
 
 <style lang="scss">
+
+
+@mixin forSmallScreens($media) {
+    @media (max-width: $media+px) {
+        @content;
+    }
+}
 .sc-week-wrapper {
   display: grid;
   grid-template-columns: 64px auto;
@@ -161,6 +164,7 @@ export default {
       transparent
     )*/;
   background-size: 64px 64px;
+
   .sc-weekdays {
     background: var(--primary);
     color: white;
@@ -169,6 +173,7 @@ export default {
 
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+
     .sc-weekday {
       display: flex;
       height: 100%;
@@ -176,16 +181,31 @@ export default {
       justify-content: center;
       align-items: center;
       flex-direction: column;
+    
 
       &:not(:last-child) {
         border-right: thin solid #7f7d82;
       }
+     &-label{
+        &:before{
+        content: attr(data-full);
+      
+      }
+        @include forSmallScreens(640) {
+       &:before{
+        content: attr(data-short);
+      
+      }
+    }
+     }
+
       &-date {
         opacity: 0.7;
         font-size: 10pt;
       }
     }
   }
+
   .sc-week-hours-wrap {
     grid-column: 1/2;
     grid-row: 2/3;
@@ -193,10 +213,12 @@ export default {
     grid-template-columns: 64px;
     grid-template-rows: repeat(24, 32px);
   }
+
   .sc-week-hours {
     grid-row: 1/25;
     background: var(--primary);
     color: aliceblue;
+
     .sc-week-hour {
       border-bottom: thin solid #7f7d82;
       grid-column-start: 1;
@@ -217,34 +239,38 @@ export default {
     grid-column-end: 3;
     grid-row-start: 2;
     position: relative;
+
     .sc-week-events {
       display: flex;
       max-width: 100%;
-    position: relative;
+      position: relative;
+
       .sc-week-event {
         color: white;
-          position: absolute;
-        width:72px;
+        position: absolute;
+        width: 72px;
         z-index: 4;
         cursor: pointer;
+
         &-time {
           color: white;
           font-size: 9pt;
-           padding: 4px;
+          padding: 4px;
         }
+
         &-title {
           display: flex;
           align-items: center;
           padding: 4px;
           font-size: 9pt;
-
         }
-      
-        &-focused,&:hover{
+
+        &-focused,
+        &:hover {
           z-index: 10;
-        // left: 0;
-        border:thin dashed #fff;
-          min-height:max-content ;
+          // left: 0;
+          border: thin dashed #fff;
+          min-height: max-content;
         }
       }
     }
