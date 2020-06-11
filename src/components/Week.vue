@@ -40,19 +40,22 @@
 </template>
 
 <script>
-import { computed, ref } from "@vue/composition-api";
+import { computed, ref, watch } from "@vue/composition-api";
 export default {
   name: "week",
   inheritAttrs: false,
   props: ["week"],
-  setup(props) {
-    const { week } = props;
+  data() {
+    return {
+      focusedEvent: {}
+    };
+  },
 
-    const focusedEvent = ref({});
-    const events = computed(() => {
+  computed: {
+    events() {
       let left = 0;
       let range = [];
-      let _events = week.weekdays
+      let _events =   this.week.weekdays
         .map(wd => wd.events)
         .flat()
         .sort((a, b) => {
@@ -79,21 +82,21 @@ export default {
         });
 
       return _events;
-    });
-
-    const mappedEvents = computed(() => {
+    },
+      mappedEvents (){
       let _mappedEvents = [];
       for (let h = 1; h <= 24; h++) {
         for (let j = 0; j < 7; j++) {
-          _mappedEvents.push(getEventsByHour(h, j));
+          _mappedEvents.push(this.getEventsByHour(h, j));
         }
       }
 
       return _mappedEvents;
-    });
-
-    function getEventsByHour(hour, day) {
-      let _events = events.value.filter(e => {
+    }
+  },
+  methods: {
+   getEventsByHour(hour, day) {
+      let _events = this.events.filter(e => {
         let startHour = new Date(e.startDate).getHours();
         return startHour === hour && day === e.weekday;
       });
@@ -103,28 +106,21 @@ export default {
         e.style.top = "0px";
         return e;
       });
-    }
+    },
 
-    const focusOnEvent = event => {
-      focusedEvent.value = event;
-    };
-    return {
-      events,
-      mappedEvents,
-      focusOnEvent,
-      focusedEvent
-    };
-  }
+   focusOnEvent (event ) {
+      this.focusedEvent = event;
+    }
+  },
+
 };
 </script>
 
 <style lang="scss">
-
-
 @mixin forSmallScreens($media) {
-    @media (max-width: $media+px) {
-        @content;
-    }
+  @media (max-width: $media+px) {
+    @content;
+  }
 }
 .sc-week-wrapper {
   display: grid;
@@ -181,23 +177,20 @@ export default {
       justify-content: center;
       align-items: center;
       flex-direction: column;
-    
 
       &:not(:last-child) {
         border-right: thin solid #7f7d82;
       }
-     &-label{
-        &:before{
-        content: attr(data-full);
-      
-      }
+      &-label {
+        &:before {
+          content: attr(data-full);
+        }
         @include forSmallScreens(640) {
-       &:before{
-        content: attr(data-short);
-      
+          &:before {
+            content: attr(data-short);
+          }
+        }
       }
-    }
-     }
 
       &-date {
         opacity: 0.7;
