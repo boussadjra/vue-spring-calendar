@@ -85,7 +85,7 @@ export default {
     },
       mappedEvents (){
       let _mappedEvents = [];
-      for (let h = 1; h <= 24; h++) {
+      for (let h = 0; h < 24; h++) {
         for (let j = 0; j < 7; j++) {
           _mappedEvents.push(this.getEventsByHour(h, j));
         }
