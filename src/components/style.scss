@@ -182,7 +182,7 @@ body {
         /* border-radius: 50%; */
         position: relative;
         justify-content: center;
-        align-items: center;
+        // align-items: center;
     }
 }
 
@@ -311,6 +311,10 @@ body {
 .sc-day-in-month {
     color: #6d6c6c;
     font-weight: bolder;
+    padding: 4px;
+    display: flex;
+    align-items:center;
+    font-size: 9pt;
 }
 
 
