@@ -17,7 +17,7 @@
     },
     "dependencies": {
         "@vue/composition-api": "^0.5.0",
-        "moment": "^2.29.2",
+        "moment": "^2.29.4",
         "vue": "^2.6.11",
         "core-js": "^3.6.4"
     },
